@@ -7,6 +7,10 @@
 const $name = $("#name");
 const $jobTitleOptions = $("#title");
 const $otherTitle = $("#other-title");
+const $tShirtOptions = $("#design");
+console.log($tShirtOptions);
+const colorOptions = $("#color option");
+console.log(colorOptions);
 
 //*============================================================================================
 
