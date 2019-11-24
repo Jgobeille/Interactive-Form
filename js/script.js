@@ -109,14 +109,32 @@ $designSelectElement.on("change", function(e) {
 
 //Select all the checkboxes
 const activitiesCheckboxes = document.querySelectorAll(".activities input");
-console.log(activitiesCheckboxes);
+
+//select activities section
+const $activitiesSection = $(".activities");
+let totalCost = 0;
+
+//create div with text "total:" and concatenate total into it
+
+//append to bottom of activities section and hide it
 
 //add event listener to all the checkboxes
 $(".activities").on("change", function(e) {
   const clicked = e.target;
   const clickedDayAndTime = clicked.getAttribute("data-day-and-time");
   const clickedCost = clicked.getAttribute("data-cost");
-  const total = 0;
+  const parsedNum = parseInt(clickedCost, 10);
+  console.log(parsedNum);
+  const clickedName = clicked.getAttribute("name");
+
+  $(".total").remove();
+  if (clicked.checked) {
+    totalCost += parsedNum;
+    $activitiesSection.append(`<div class="total">Total: ${totalCost}</div>`);
+  } else {
+    totalCost -= parsedNum;
+    $activitiesSection.append(`<div class="total">Total: ${totalCost}</div>`);
+  }
 
   //loop over all the checkboxes
   for (var i = 0; i < activitiesCheckboxes.length; i++) {
