@@ -127,7 +127,9 @@ $(".activities").on("change", function(e) {
   console.log(parsedNum);
   const clickedName = clicked.getAttribute("name");
 
+  //On change, remove old total
   $(".total").remove();
+
   if (clicked.checked) {
     totalCost += parsedNum;
     $activitiesSection.append(`<div class="total">Total: ${totalCost}</div>`);
