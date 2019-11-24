@@ -53,11 +53,11 @@ $colorSelectElement.prepend(
 
 //set all the color options to hidden
 $colorOptions.attr("hidden", true);
-
+//hide the design bolierplate text
+$("#design > option:nth-child(1)").attr("hidden", true);
 //when the selection changes in design selection box, perform functions
 $designSelectElement.on("change", function(e) {
-  //hide the bolierplate text on change
-  $("#design > option:nth-child(1)").attr("hidden", true);
+  //hide the color bolierplate text on change
   $("#color > option:nth-child(1)").attr("hidden", true);
   //if target value is equal to js puns, then make the second option 'selected', show the first three options, and hide the rest
   if ($(e.target).val() === "js puns") {
@@ -93,3 +93,45 @@ $designSelectElement.on("change", function(e) {
 // Register for Activities Section
 
 //*============================================================================================
+
+/*
+ Main Tasks:
+ 1a. If tasks are selected, disable the selection of the other events that happen at the same time
+ 1b. Visually display that those options are unavailable
+
+ 2. If user un-checks event, re-enable all options
+
+ 3. Add running total to bottom of section for each event chosen
+
+*/
+
+//How to get data-type of element: https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute
+
+//Select all the checkboxes
+const activitiesCheckboxes = document.querySelectorAll(".activities input");
+console.log(activitiesCheckboxes);
+
+//add event listener to all the checkboxes
+$(".activities").on("change", function(e) {
+  const clicked = e.target;
+  const clickedDayAndTime = clicked.getAttribute("data-day-and-time");
+  const clickedCost = clicked.getAttribute("data-cost");
+  const total = 0;
+
+  //loop over all the checkboxes
+  for (var i = 0; i < activitiesCheckboxes.length; i++) {
+    //get all the datatypes
+    const eventDayAndTime = activitiesCheckboxes[i].getAttribute(
+      "data-day-and-time"
+    );
+    const name = activitiesCheckboxes[i].getAttribute("name");
+    if (clicked.checked) {
+      //check if same date and time
+      if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+        activitiesCheckboxes[i].setAttribute("disabled", "true");
+      }
+    } else {
+      activitiesCheckboxes[i].removeAttribute("disabled");
+    }
+  }
+});
