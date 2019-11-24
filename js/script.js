@@ -11,6 +11,9 @@ const $designSelectElement = $("#design");
 const $designOptions = $("#design option");
 const $colorSelectElement = $("#color");
 const $colorOptions = $("#color option");
+const $activitiesSection = $(".activities");
+const activitiesCheckboxes = document.querySelectorAll(".activities input");
+let totalCost = 0;
 
 //*============================================================================================
 
@@ -107,50 +110,42 @@ $designSelectElement.on("change", function(e) {
 
 //How to get data-type of element: https://developer.mozilla.org/en-US/docs/Web/API/Element/getAttribute
 
-//Select all the checkboxes
-const activitiesCheckboxes = document.querySelectorAll(".activities input");
-
-//select activities section
-const $activitiesSection = $(".activities");
-let totalCost = 0;
-
-//create div with text "total:" and concatenate total into it
-
-//append to bottom of activities section and hide it
-
-//add event listener to all the checkboxes
 $(".activities").on("change", function(e) {
   const clicked = e.target;
   const clickedDayAndTime = clicked.getAttribute("data-day-and-time");
   const clickedCost = clicked.getAttribute("data-cost");
-  const parsedNum = parseInt(clickedCost, 10);
-  console.log(parsedNum);
   const clickedName = clicked.getAttribute("name");
+  const parsedNum = parseInt(clickedCost, 10);
 
   //On change, remove old total
   $(".total").remove();
 
   if (clicked.checked) {
     totalCost += parsedNum;
+    //append total to page
     $activitiesSection.append(`<div class="total">Total: ${totalCost}</div>`);
   } else {
     totalCost -= parsedNum;
+    //append total to page
     $activitiesSection.append(`<div class="total">Total: ${totalCost}</div>`);
   }
 
   //loop over all the checkboxes
   for (var i = 0; i < activitiesCheckboxes.length; i++) {
-    //get all the datatypes
+    //get important data-types
     const eventDayAndTime = activitiesCheckboxes[i].getAttribute(
       "data-day-and-time"
     );
     const name = activitiesCheckboxes[i].getAttribute("name");
+
     if (clicked.checked) {
-      //check if same date and time
+      //check if same date and time and if clickedName is not equal to name
       if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+        //disable matches
         activitiesCheckboxes[i].setAttribute("disabled", "true");
       }
     } else {
+      //remove the disabled attribute
       activitiesCheckboxes[i].removeAttribute("disabled");
     }
   }
