@@ -13,6 +13,7 @@ const $colorSelectElement = $("#color");
 const $colorOptions = $("#color option");
 const $activitiesSection = $(".activities");
 const activitiesCheckboxes = document.querySelectorAll(".activities input");
+const activitiesTextContent = document.querySelectorAll(".activities label");
 let totalCost = 0;
 
 //*============================================================================================
@@ -112,6 +113,7 @@ $designSelectElement.on("change", function(e) {
 
 $(".activities").on("change", function(e) {
   const clicked = e.target;
+  console.log(e.target.textContent);
   const clickedDayAndTime = clicked.getAttribute("data-day-and-time");
   const clickedCost = clicked.getAttribute("data-cost");
   const clickedName = clicked.getAttribute("name");
@@ -132,21 +134,30 @@ $(".activities").on("change", function(e) {
 
   //loop over all the checkboxes
   for (var i = 0; i < activitiesCheckboxes.length; i++) {
-    //get important data-types
-    const eventDayAndTime = activitiesCheckboxes[i].getAttribute(
-      "data-day-and-time"
-    );
-    const name = activitiesCheckboxes[i].getAttribute("name");
+    for (var j = 0; j < activitiesTextContent.length; j++) {
+      //get important data-types
+      const eventDayAndTime = activitiesCheckboxes[i].getAttribute(
+        "data-day-and-time"
+      );
+      const name = activitiesCheckboxes[i].getAttribute("name");
+      const textColor = activitiesTextContent[i];
 
-    if (clicked.checked) {
-      //check if same date and time and if clickedName is not equal to name
-      if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
-        //disable matches
-        activitiesCheckboxes[i].setAttribute("disabled", "true");
+      if (clicked.checked) {
+        console.log(activitiesTextContent[j].textContent);
+        //check if same date and time and if clickedName is not equal to name
+        if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+          //disable matches
+          activitiesCheckboxes[i].setAttribute("disabled", "true");
+          console.log(activitiesCheckboxes[i]);
+          // const textColor = activitiesTextContent[j].textContent;
+
+          textColor.style.color = "#60685C";
+        }
+      } else {
+        //remove the disabled attribute
+        activitiesCheckboxes[i].removeAttribute("disabled");
+        textColor.style.color = "#000";
       }
-    } else {
-      //remove the disabled attribute
-      activitiesCheckboxes[i].removeAttribute("disabled");
     }
   }
 });
