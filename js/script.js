@@ -231,3 +231,20 @@ Main Tasks:
     * The Zip Code field should accept a 5-digit number.
     * The CVV should only accept a number that is exactly 3 digits long.
 */
+
+//select all the inputs that need to be validated
+const usernameInput = document.querySelector("#name");
+console.log(usernameInput);
+
+usernameInput.addEventListener("input", isValidUsername);
+
+//name validation
+function isValidUsername(e) {
+  if (e.target.value === "") {
+    usernameInput.placeholder = "Cannot be empty!";
+    usernameInput.style.border = " 2px solid red";
+    return false;
+  } else {
+    usernameInput.style.border = "2px solid rgb(111, 157, 220)";
+  }
+}
