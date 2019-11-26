@@ -20,14 +20,13 @@ const $colorOptions = $("#color option");
 const $activitiesSection = $(".activities");
 const activitiesCheckboxes = document.querySelectorAll(".activities input");
 const activitiesTextContent = document.querySelectorAll(".activities label");
-
+let totalCost = 0;
 //Payment section global vars
 const $paymentOptions = [...document.querySelectorAll("#payment option")];
 const $paymentSection = $("#payment");
 const selectPaymentMethod = document.querySelector(
   "#payment > option:nth-child(1)"
 );
-let totalCost = 0;
 
 //*============================================================================================
 
@@ -190,8 +189,6 @@ Main tasks:
 
 */
 
-//make credit card option "selected"
-selectPaymentMethod.setAttribute("selected", true);
 //hide payment option from list, but display it as first option
 selectPaymentMethod.setAttribute("hidden", true);
 //select qnd hide all the options
@@ -216,3 +213,21 @@ $paymentSection.on("change", function(e) {
     }
   });
 });
+
+//*============================================================================================
+
+// Form Validation
+
+//*============================================================================================
+
+/* 
+Main Tasks:
+1. If any of these validation errors exist, do not allow user to submit form
+  a. Name field can't be blank.
+  b. Email field must be a validly formatted e-mail address "(you don't have to check that it's a real e-mail address, just that it's formatted like one: dave@teamtreehouse.com for example)".
+  c. User must select at least one checkbox under the "Register for Activities" section of the form.
+  d. If the selected payment option is "Credit Card," make sure the user has supplied a Credit Card number, a Zip Code, and a 3 number CVV value before the form can be submitted.
+    * Credit Card field should only accept a number between 13 and 16 digits.
+    * The Zip Code field should accept a 5-digit number.
+    * The CVV should only accept a number that is exactly 3 digits long.
+*/
