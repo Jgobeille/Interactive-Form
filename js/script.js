@@ -3,17 +3,30 @@
 //Global vars
 
 //*============================================================================================
-
+//focus feature global var
 const $name = $("#name");
+
+//Job title global vars
 const $jobTitleOptions = $("#title");
 const $otherTitle = $("#other-title");
+
+//T-shirt section global vars
 const $designSelectElement = $("#design");
 const $designOptions = $("#design option");
 const $colorSelectElement = $("#color");
 const $colorOptions = $("#color option");
+
+//activities global vars
 const $activitiesSection = $(".activities");
 const activitiesCheckboxes = document.querySelectorAll(".activities input");
 const activitiesTextContent = document.querySelectorAll(".activities label");
+
+//Payment section global vars
+const $paymentOptions = [...document.querySelectorAll("#payment option")];
+const $paymentSection = $("#payment");
+const selectPaymentMethod = document.querySelector(
+  "#payment > option:nth-child(1)"
+);
 let totalCost = 0;
 
 //*============================================================================================
@@ -160,4 +173,46 @@ $(".activities").on("change", function(e) {
       }
     }
   }
+});
+
+//*============================================================================================
+
+// Payment Section
+
+//*============================================================================================
+
+/*
+Main tasks:
+1. Display payment sections based on the payment option chosen in the select menu.
+2. Credit card payment should be default option
+3.If payPal, show PayPal message
+4.If bitcoin, show bitcoin message
+
+*/
+
+//make credit card option "selected"
+selectPaymentMethod.setAttribute("selected", true);
+//hide payment option from list, but display it as first option
+selectPaymentMethod.setAttribute("hidden", true);
+//select qnd hide all the options
+$("#paypal").hide();
+$("#bitcoin").hide();
+
+//add change listener on payment options
+$paymentSection.on("change", function(e) {
+  $paymentOptions.forEach(element => {
+    if (e.target.value === "credit card") {
+      $("#credit-card").show();
+      $("#paypal").hide();
+      $("#bitcoin").hide();
+    } else if (e.target.value === "paypal") {
+      $("#credit-card").hide();
+      $("#paypal").show();
+      $("#bitcoin").hide();
+    } else {
+      $("#credit-card").hide();
+      $("#paypal").hide();
+      $("#bitcoin").show();
+    }
+  });
 });
