@@ -246,5 +246,6 @@ function isValidUsername(e) {
     return false;
   } else {
     usernameInput.style.border = "2px solid rgb(111, 157, 220)";
+    return true;
   }
 }
