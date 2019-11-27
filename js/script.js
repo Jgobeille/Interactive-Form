@@ -301,6 +301,7 @@ isValidPayment = () => {
   const isPropSelected = selected.prop("selected");
   if (isPropSelected) {
     console.log("true");
+    return true;
   }
 };
 
