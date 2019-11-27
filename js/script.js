@@ -154,12 +154,11 @@ $(".activities").on("change", function(e) {
       const textColor = activitiesTextContent[i];
 
       if (clicked.checked) {
-        console.log(activitiesTextContent[j].textContent);
         //check if same date and time and if clickedName is not equal to name
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
           //disable matches
           activitiesCheckboxes[i].setAttribute("disabled", "true");
-          console.log(activitiesCheckboxes[i]);
+
           // const textColor = activitiesTextContent[j].textContent;
 
           textColor.style.color = "#60685C";
@@ -234,7 +233,6 @@ Main Tasks:
 //select all the inputs that need to be validated
 const usernameInput = document.querySelector("#name");
 const emailInput = document.getElementById("mail");
-console.log(activitiesCheckboxes);
 
 //name validation
 isValidUsername = e => {
@@ -262,6 +260,35 @@ isValidEmail = email => {
     return false;
   }
 };
+
+//activities Validation
+activitiesIsChecked = () => {
+  /* information on array.prototype.slice() && array.prototype.slice.call() found here:
+        1. https://stackoverflow.com/questions/7056925/how-does-array-prototype-slice-call-work
+        2. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
+        3. https://stackoverflow.com/questions/11787665/making-sure-at-least-one-checkbox-is-checked
+        4. http://www.javascriptkit.com/javatutors/arrayprototypeslice.shtml
+    */
+
+  const checkedOne = Array.prototype.slice
+    .call(activitiesCheckboxes)
+    .some(x => x.checked);
+  if (checkedOne) {
+    console.log("good");
+    return true;
+  } else {
+    console.log("bad");
+    return false;
+  }
+};
+
+//button stop submit
+const $button = $("button");
+
+$button.click(e => {
+  e.preventDefault();
+  activitiesIsChecked();
+});
 
 //event listeners
 usernameInput.addEventListener("input", isValidUsername);
