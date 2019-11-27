@@ -21,13 +21,14 @@ const $activitiesSection = $(".activities");
 const activitiesCheckboxes = document.querySelectorAll(".activities input");
 const activitiesTextContent = document.querySelectorAll(".activities label");
 let totalCost = 0;
+
 //Payment section global vars
 const $paymentOptions = [...document.querySelectorAll("#payment option")];
 const $paymentSection = $("#payment");
 const selectPaymentMethod = document.querySelector(
   "#payment > option:nth-child(1)"
 );
-const creditCard = $("#credit-card");
+let creditCard = $("#credit-card");
 const payPal = $("#paypal");
 const bitcoin = $("#bitcoin");
 const paymentArray = [creditCard, payPal, bitcoin];
@@ -295,6 +296,13 @@ activitiesIsChecked = () => {
 };
 
 //Payment Info Validation
+const selected = $("#payment > option:nth-child(2)");
+isValidPayment = () => {
+  const isPropSelected = selected.prop("selected");
+  if (isPropSelected) {
+    console.log("true");
+  }
+};
 
 //button stop submit
 const $button = $("button");
@@ -302,6 +310,7 @@ const $button = $("button");
 $button.click(e => {
   e.preventDefault();
   activitiesIsChecked();
+  isValidPayment();
 });
 
 //event listeners
