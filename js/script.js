@@ -125,7 +125,6 @@ $designSelectElement.on("change", function(e) {
 
 $(".activities").on("change", function(e) {
   const clicked = e.target;
-  console.log(e.target.textContent);
   const clickedDayAndTime = clicked.getAttribute("data-day-and-time");
   const clickedCost = clicked.getAttribute("data-cost");
   const clickedName = clicked.getAttribute("name");
@@ -234,12 +233,11 @@ Main Tasks:
 
 //select all the inputs that need to be validated
 const usernameInput = document.querySelector("#name");
-console.log(usernameInput);
-
-usernameInput.addEventListener("input", isValidUsername);
+const emailInput = document.getElementById("mail");
+console.log(activitiesCheckboxes);
 
 //name validation
-function isValidUsername(e) {
+isValidUsername = e => {
   if (e.target.value === "") {
     usernameInput.placeholder = "Cannot be empty!";
     usernameInput.style.border = " 2px solid red";
@@ -248,4 +246,23 @@ function isValidUsername(e) {
     usernameInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   }
-}
+};
+
+//email Validation
+isValidEmail = email => {
+  const text = email.target.value;
+  const regex = /^[^@]+@[^@.]+\.[a-z]+$/gi.test(text);
+
+  if (regex) {
+    console.log("good");
+    return true;
+  } else {
+    emailInput.style.border = " 2px solid red";
+    console.log("Needs to be properly formatted!!");
+    return false;
+  }
+};
+
+//event listeners
+usernameInput.addEventListener("input", isValidUsername);
+emailInput.addEventListener("input", isValidEmail);
