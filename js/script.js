@@ -195,28 +195,28 @@ $("#bitcoin").hide();
 
 //add change listener on payment options
 $paymentSection.on("change", function(e) {
-  let selected = e.target;
-  selected.setAttribute("selected", true);
-
-  $paymentOptions.forEach(element => {
-    const index = $paymentOptions.indexOf(element);
-    console.log($paymentOptions[index]);
+  //change to for loop and make set attribute to $
+  for (var i = 0; i < $paymentOptions.length; i++) {
     if (e.target.value === "credit card") {
-      // const index = $paymentOptions.indexOf("credit card");
-      // console.log(index);
+      $paymentOptions[1].setAttribute("selected", true);
+      $paymentOptions[i].removeAttribute("selected");
       $("#credit-card").show();
       $("#paypal").hide();
       $("#bitcoin").hide();
     } else if (e.target.value === "paypal") {
+      $paymentOptions[2].setAttribute("selected", true);
+      $paymentOptions[i].removeAttribute("selected");
       $("#credit-card").hide();
       $("#paypal").show();
       $("#bitcoin").hide();
     } else {
+      $paymentOptions[3].setAttribute("selected", true);
+      $paymentOptions[i].removeAttribute("selected");
       $("#credit-card").hide();
       $("#paypal").hide();
       $("#bitcoin").show();
     }
-  });
+  }
 });
 
 //*============================================================================================
