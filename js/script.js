@@ -195,8 +195,15 @@ $("#bitcoin").hide();
 
 //add change listener on payment options
 $paymentSection.on("change", function(e) {
+  let selected = e.target;
+  selected.setAttribute("selected", true);
+
   $paymentOptions.forEach(element => {
+    const index = $paymentOptions.indexOf(element);
+    console.log($paymentOptions[index]);
     if (e.target.value === "credit card") {
+      // const index = $paymentOptions.indexOf("credit card");
+      // console.log(index);
       $("#credit-card").show();
       $("#paypal").hide();
       $("#bitcoin").hide();
@@ -253,6 +260,7 @@ isValidEmail = email => {
 
   if (regex) {
     console.log("good");
+    emailInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
     emailInput.style.border = " 2px solid red";
@@ -270,6 +278,7 @@ activitiesIsChecked = () => {
         4. http://www.javascriptkit.com/javatutors/arrayprototypeslice.shtml
     */
 
+  //checks if at least one checkbox is checked
   const checkedOne = Array.prototype.slice
     .call(activitiesCheckboxes)
     .some(x => x.checked);
@@ -281,6 +290,8 @@ activitiesIsChecked = () => {
     return false;
   }
 };
+
+//Payment Info Validation
 
 //button stop submit
 const $button = $("button");
