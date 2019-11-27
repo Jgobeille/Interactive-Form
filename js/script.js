@@ -27,6 +27,10 @@ const $paymentSection = $("#payment");
 const selectPaymentMethod = document.querySelector(
   "#payment > option:nth-child(1)"
 );
+const creditCard = $("#credit-card");
+const payPal = $("#paypal");
+const bitcoin = $("#bitcoin");
+const paymentArray = [creditCard, payPal, bitcoin];
 
 //*============================================================================================
 
@@ -190,33 +194,32 @@ Main tasks:
 //hide payment option from list, but display it as first option
 selectPaymentMethod.setAttribute("hidden", true);
 //select qnd hide all the options
-$("#paypal").hide();
-$("#bitcoin").hide();
-
+payPal.hide();
+bitcoin.hide();
 //add change listener on payment options
 $paymentSection.on("change", function(e) {
-  //change to for loop and make set attribute to $
-  for (var i = 0; i < $paymentOptions.length; i++) {
-    if (e.target.value === "credit card") {
-      $paymentOptions[1].setAttribute("selected", true);
-      $paymentOptions[i].removeAttribute("selected");
-      $("#credit-card").show();
-      $("#paypal").hide();
-      $("#bitcoin").hide();
-    } else if (e.target.value === "paypal") {
-      $paymentOptions[2].setAttribute("selected", true);
-      $paymentOptions[i].removeAttribute("selected");
-      $("#credit-card").hide();
-      $("#paypal").show();
-      $("#bitcoin").hide();
-    } else {
-      $paymentOptions[3].setAttribute("selected", true);
-      $paymentOptions[i].removeAttribute("selected");
-      $("#credit-card").hide();
-      $("#paypal").hide();
-      $("#bitcoin").show();
-    }
-  }
+  $paymentOptions.map(element => {
+    const index = $paymentOptions.indexOf(element);
+    paymentArray.map(payments => {
+      const index2 = paymentArray.indexOf(payments);
+      if (e.target.value === "credit card") {
+        $($paymentOptions[1]).attr("selected", true);
+        $($paymentOptions[index]).removeAttr("selected");
+        paymentArray[0].show();
+        paymentArray[index2].hide();
+      } else if (e.target.value === "paypal") {
+        $($paymentOptions[2]).attr("selected", true);
+        $($paymentOptions[index]).removeAttr("selected");
+        paymentArray[1].show();
+        paymentArray[index2].hide();
+      } else {
+        $($paymentOptions[index]).removeAttr("selected");
+        $($paymentOptions[3]).attr("selected", true);
+        paymentArray[index2].hide();
+        paymentArray[2].show();
+      }
+    });
+  });
 });
 
 //*============================================================================================
