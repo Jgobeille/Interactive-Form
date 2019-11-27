@@ -14,7 +14,8 @@ const $otherTitle = $("#other-title");
 const $designSelectElement = $("#design");
 const $designOptions = $("#design option");
 const $colorSelectElement = $("#color");
-const $colorOptions = $("#color option");
+const $colorOptions = document.querySelectorAll$("#color option");
+const colorOptions = [...document.querySelectorAll$("#color option")];
 
 //activities global vars
 const $activitiesSection = $(".activities");
@@ -80,33 +81,36 @@ $("#design > option:nth-child(1)").attr("hidden", true);
 $designSelectElement.on("change", function(e) {
   //hide the color bolierplate text on change
   $("#color > option:nth-child(1)").attr("hidden", true);
-  //if target value is equal to js puns, then make the second option 'selected', show the first three options, and hide the rest
-  if ($(e.target).val() === "js puns") {
-    $("#color > option:nth-child(2)")
-      .attr("selected", true)
-      .show();
-    $("#color > option:nth-child(3)").show();
-    $("#color > option:nth-child(4)").show();
+  $colorOptions.map(element => {
+    console.log(element);
+    //if target value is equal to js puns, then make the second option 'selected', show the first three options, and hide the rest
+    if ($(e.target).val() === "js puns") {
+      $("#color > option:nth-child(2)")
+        .attr("selected", true)
+        .show();
+      $("#color > option:nth-child(3)").show();
+      $("#color > option:nth-child(4)").show();
 
-    $("#color > option:nth-child(5)")
-      .attr("selected", false)
-      .hide();
-    $("#color > option:nth-child(6)").hide();
-    $("#color > option:nth-child(7)").hide();
-    //Else hide the first three options and make the last three visible
-  } else {
-    $("#color > option:nth-child(2)")
-      .attr("selected", false)
-      .hide();
-    $("#color > option:nth-child(3)").hide();
-    $("#color > option:nth-child(4)").hide();
+      $("#color > option:nth-child(5)")
+        .attr("selected", false)
+        .hide();
+      $("#color > option:nth-child(6)").hide();
+      $("#color > option:nth-child(7)").hide();
+      //Else hide the first three options and make the last three visible
+    } else {
+      $("#color > option:nth-child(2)")
+        .attr("selected", false)
+        .hide();
+      $("#color > option:nth-child(3)").hide();
+      $("#color > option:nth-child(4)").hide();
 
-    $("#color > option:nth-child(5)")
-      .attr("selected", true)
-      .show();
-    $("#color > option:nth-child(6)").show();
-    $("#color > option:nth-child(7)").show();
-  }
+      $("#color > option:nth-child(5)")
+        .attr("selected", true)
+        .show();
+      $("#color > option:nth-child(6)").show();
+      $("#color > option:nth-child(7)").show();
+    }
+  });
 });
 
 //*============================================================================================
@@ -200,6 +204,7 @@ bitcoin.hide();
 //add change listener on payment options
 $paymentSection.on("change", function(e) {
   $paymentOptions.map(element => {
+    console.log(element);
     const index = $paymentOptions.indexOf(element);
     paymentArray.map(payments => {
       const index2 = paymentArray.indexOf(payments);
@@ -243,7 +248,11 @@ Main Tasks:
 
 //select all the inputs that need to be validated
 const usernameInput = document.querySelector("#name");
-const emailInput = document.getElementById("mail");
+const emailInput = document.querySelector("#mail");
+const CCInput = document.querySelector("#cc-num");
+const zipCodeInput = document.querySelector("#zip");
+const CVVInput = document.querySelector("#cvv");
+const selected = $("#payment > option:nth-child(2)");
 
 //name validation
 isValidUsername = e => {
@@ -296,11 +305,55 @@ activitiesIsChecked = () => {
 };
 
 //Payment Info Validation
-const selected = $("#payment > option:nth-child(2)");
+isValidCC = cc => {
+  const text = cc.target.value;
+  const regex = /^\d{13,16}$/gi.test(text);
+  if (regex) {
+    console.log("good");
+    CCInput.style.border = "2px solid rgb(111, 157, 220)";
+    return true;
+  } else {
+    CCInput.style.border = " 2px solid red";
+    console.log("Needs to be properly formatted!!");
+    return false;
+  }
+};
+
+isValidZipCode = zipCode => {
+  const text = zipCode.target.value;
+  const regex = /^\d{5}$/gi.test(text);
+  if (regex) {
+    console.log("good");
+    zipCodeInput.style.border = "2px solid rgb(111, 157, 220)";
+    return true;
+  } else {
+    zipCodeInput.style.border = " 2px solid red";
+    console.log("Needs to be properly formatted!!");
+    return false;
+  }
+};
+
+isValidCVV = cvv => {
+  const text = cvv.target.value;
+  const regex = /^\d{3}$/gi.test(text);
+  if (regex) {
+    console.log("good");
+    CVVInput.style.border = "2px solid rgb(111, 157, 220)";
+    return true;
+  } else {
+    CVVInput.style.border = " 2px solid red";
+    console.log("Needs to be properly formatted!!");
+    return false;
+  }
+};
+
 isValidPayment = () => {
   const isPropSelected = selected.prop("selected");
   if (isPropSelected) {
-    console.log("true");
+    CCInput.addEventListener("input", isValidCC);
+    zipCodeInput.addEventListener("input", isValidZipCode);
+    CVVInput.addEventListener("input", isValidCVV);
+  } else {
     return true;
   }
 };
@@ -317,3 +370,6 @@ $button.click(e => {
 //event listeners
 usernameInput.addEventListener("input", isValidUsername);
 emailInput.addEventListener("input", isValidEmail);
+CCInput.addEventListener("input", isValidCC);
+zipCodeInput.addEventListener("input", isValidZipCode);
+CVVInput.addEventListener("input", isValidCVV);
