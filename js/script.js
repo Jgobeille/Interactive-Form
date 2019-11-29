@@ -206,7 +206,7 @@ $paymentSection.on("change", function(e) {
     paymentArray.map(payments => {
       const index2 = paymentArray.indexOf(payments);
       if (e.target.value === "credit card") {
-        isValidPayment();
+        CCisSelected();
         $($paymentOptions[1]).attr("selected", true);
         $($paymentOptions[index]).removeAttr("selected");
         paymentArray[0].show();
@@ -268,7 +268,6 @@ isValidUsername = e => {
 
 //email Validation
 isValidEmail = email => {
-  console.log(email);
   const text = email.target.value;
   const regex = /^[^@]+@[^@.]+\.[a-z]+$/gi.test(text);
 
@@ -348,7 +347,7 @@ isValidCVV = cvv => {
   }
 };
 
-isValidPayment = () => {
+CCisSelected = () => {
   const isPropSelected = selected.prop("selected");
   if (isPropSelected) {
     CCInput.addEventListener("input", isValidCC);
@@ -362,8 +361,6 @@ isValidPayment = () => {
 //form submission
 
 $("form").on("submit", e => {
-  const name = usernameInput.value;
-  console.log(name);
   e.preventDefault();
   isValidUsername(name);
   isValidEmail(emailInput.value);
