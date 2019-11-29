@@ -32,8 +32,12 @@ const option1st2ndAnd3rd = colorOptions.slice(0, 3);
 
 //activities global vars
 const $activitiesSection = $(".activities");
-const activitiesCheckboxes = document.querySelectorAll(".activities input");
-const activitiesTextContent = document.querySelectorAll(".activities label");
+const activitiesCheckboxes = [
+  ...document.querySelectorAll(".activities input")
+];
+const activitiesTextContent = [
+  ...document.querySelectorAll(".activities label")
+];
 let totalCost = 0;
 
 //Payment section global vars
@@ -189,28 +193,29 @@ $(".activities").on("change", function(e) {
   if (clicked.checked) {
     totalCost += parsedNum;
     //append total to page
-    $activitiesSection.append(`<div class="total">Total: ${totalCost}</div>`);
+    $activitiesSection.append(`<div class="total">Total: $ ${totalCost}</div>`);
   } else {
     totalCost -= parsedNum;
     //append total to page
-    $activitiesSection.append(`<div class="total">Total: ${totalCost}</div>`);
+    $activitiesSection.append(`<div class="total">Total: $ ${totalCost}</div>`);
   }
 
   //loop over all the checkboxes
-  for (var i = 0; i < activitiesCheckboxes.length; i++) {
-    for (var j = 0; j < activitiesTextContent.length; j++) {
+  activitiesCheckboxes.map(element => {
+    const index = activitiesCheckboxes.indexOf(element);
+    activitiesTextContent.map(() => {
       //get important data-types
-      const eventDayAndTime = activitiesCheckboxes[i].getAttribute(
+      const eventDayAndTime = activitiesCheckboxes[index].getAttribute(
         "data-day-and-time"
       );
-      const name = activitiesCheckboxes[i].getAttribute("name");
-      const textColor = activitiesTextContent[i];
+      const name = activitiesCheckboxes[index].getAttribute("name");
+      const textColor = activitiesTextContent[index];
 
       if (clicked.checked) {
         //check if same date and time and if clickedName is not equal to name
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
           //disable matches
-          activitiesCheckboxes[i].setAttribute("disabled", "true");
+          activitiesCheckboxes[index].setAttribute("disabled", "true");
 
           textColor.style.color = "#60685C";
         }
@@ -218,12 +223,12 @@ $(".activities").on("change", function(e) {
       //if clicked is unchecked, re-enable buttons
       if (!clicked.checked) {
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
-          activitiesCheckboxes[i].removeAttribute("disabled");
+          activitiesCheckboxes[index].removeAttribute("disabled");
           textColor.style.color = "#000";
         }
       }
-    }
-  }
+    });
+  });
 });
 
 //*============================================================================================
@@ -247,7 +252,7 @@ selectPaymentMethod.setAttribute("hidden", true);
 payPal.hide();
 bitcoin.hide();
 //add change listener on payment options
-$paymentSection.on("change", function(e) {
+$paymentSection.on("change", e => {
   $paymentOptions.map(element => {
     const index = $paymentOptions.indexOf(element);
     paymentArray.map(payments => {
