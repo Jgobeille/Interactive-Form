@@ -47,6 +47,43 @@ const payPal = $("#paypal");
 const bitcoin = $("#bitcoin");
 const paymentArray = [creditCard, payPal, bitcoin];
 
+//form Validation global vars
+
+//select all the inputs that need to be validated
+const usernameInput = document.querySelector("#name");
+const emailInput = document.querySelector("#mail");
+const CCInput = document.querySelector("#cc-num");
+const zipCodeInput = document.querySelector("#zip");
+const CVVInput = document.querySelector("#cvv");
+const $selected = $("#payment option").eq(1);
+const $nameLabel = $('label[for="name"]');
+const $emailLabel = $('label[for="mail"]');
+const $activitiesLegend = $(".activities legend");
+const $CCLabel = $('label[for="cc-num"]');
+const $zipCodeLabel = $('label[for="zip"]');
+const $CVVLabel = $('label[for="cvv"]');
+const $paymentLabel = $(".payments ul");
+
+//make error messages and hide them
+const $nameLabelError = $(
+  '<span class="error"> Name cannot be empty</span>'
+).hide();
+const $emailLabelError = $(
+  '<span class="error"> Email Must be properly formatted</span>'
+).hide();
+const $activitiesLegendError = $(
+  '<span class="error"> At least one activity must be checked</span>'
+).hide();
+const $CCLabelError = $(
+  '<li class="payment-error">Must be 13-16 digits long</li>'
+).hide();
+const $zipCodeLabelError = $(
+  '<li class="payment-error">Must be 5 digits long</li>'
+).hide();
+const $CVVLabelError = $(
+  '<li class="payment-error">Must be 3 digits long</li>'
+).hide();
+
 //*============================================================================================
 
 //Focus Feature
@@ -78,8 +115,6 @@ $jobTitleOptions.on("change", function() {
 //T-Shirt Info Section
 
 //*============================================================================================
-
-//Refactor this. This is seriously hot garbage
 
 //append select T-shirt text to the top of the list and make it selected
 $colorSelectElement.prepend(
@@ -177,14 +212,15 @@ $(".activities").on("change", function(e) {
           //disable matches
           activitiesCheckboxes[i].setAttribute("disabled", "true");
 
-          // const textColor = activitiesTextContent[j].textContent;
-
           textColor.style.color = "#60685C";
         }
-      } else {
-        //remove the disabled attribute
-        activitiesCheckboxes[i].removeAttribute("disabled");
-        textColor.style.color = "#000";
+      }
+      //if clicked is unchecked, re-enable buttons
+      if (!clicked.checked) {
+        if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+          activitiesCheckboxes[i].removeAttribute("disabled");
+          textColor.style.color = "#000";
+        }
       }
     }
   }
@@ -217,6 +253,7 @@ $paymentSection.on("change", function(e) {
     paymentArray.map(payments => {
       const index2 = paymentArray.indexOf(payments);
       if (e.target.value === "credit card") {
+        CCisSelected();
         $($paymentOptions[1]).attr("selected", true);
         $($paymentOptions[index]).removeAttr("selected");
         paymentArray[0].show();
@@ -254,24 +291,23 @@ Main Tasks:
     * The CVV should only accept a number that is exactly 3 digits long.
 */
 
-//select all the inputs that need to be validated
-const usernameInput = document.querySelector("#name");
-const emailInput = document.querySelector("#mail");
-const CCInput = document.querySelector("#cc-num");
-const zipCodeInput = document.querySelector("#zip");
-const CVVInput = document.querySelector("#cvv");
-const selected = $("#payment option").eq(1);
+//append error messages
+$nameLabel.append($nameLabelError);
+$emailLabel.append($emailLabelError);
+$activitiesLegend.append($activitiesLegendError);
+$paymentLabel.append($CCLabelError);
+$paymentLabel.append($zipCodeLabelError);
+$paymentLabel.append($CVVLabelError);
 
 //name validation
 isValidUsername = () => {
   if (usernameInput.value === "") {
-    usernameInput.placeholder = "Cannot be empty!";
-    usernameInput.style.border = " 2px solid red";
-    console.log("false");
+    $nameLabelError.show();
+    usernameInput.style.border = " 2px solid #800000";
     return false;
   } else {
+    $nameLabelError.hide();
     usernameInput.style.border = "2px solid rgb(111, 157, 220)";
-    console.log("true");
     return true;
   }
 };
@@ -280,14 +316,13 @@ isValidUsername = () => {
 isValidEmail = () => {
   const text = emailInput.value;
   const regex = /^[^@]+@[^@.]+\.[a-z]+$/gi.test(text);
-
   if (regex) {
-    console.log("true");
+    $emailLabelError.hide();
     emailInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
-    emailInput.style.border = " 2px solid red";
-    console.log("Needs to be properly formatted!!");
+    $emailLabelError.show();
+    emailInput.style.border = " 2px solid #800000";
     return false;
   }
 };
@@ -300,16 +335,15 @@ isActivitiesChecked = () => {
         3. https://stackoverflow.com/questions/11787665/making-sure-at-least-one-checkbox-is-checked
         4. http://www.javascriptkit.com/javatutors/arrayprototypeslice.shtml
     */
-
   //checks if at least one checkbox is checked
   const checkedOne = Array.prototype.slice
     .call(activitiesCheckboxes)
     .some(x => x.checked);
   if (checkedOne) {
-    console.log("true");
+    $activitiesLegendError.hide();
     return true;
   } else {
-    console.log("false");
+    $activitiesLegendError.show();
     return false;
   }
 };
@@ -319,12 +353,12 @@ isValidCC = () => {
   const text = CCInput.value;
   const regex = /^\d{13,16}$/gi.test(text);
   if (regex) {
-    console.log("true");
+    $CCLabelError.hide();
     CCInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
-    CCInput.style.border = " 2px solid red";
-    console.log("Needs to be properly formatted!!");
+    CCInput.style.border = " 2px solid #800000";
+    $CCLabelError.show();
     return false;
   }
 };
@@ -333,12 +367,12 @@ isValidZipCode = () => {
   const text = zipCodeInput.value;
   const regex = /^\d{5}$/gi.test(text);
   if (regex) {
-    console.log("true");
+    $zipCodeLabelError.hide();
     zipCodeInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
-    zipCodeInput.style.border = " 2px solid red";
-    console.log("Needs to be properly formatted!!");
+    $zipCodeLabelError.show();
+    zipCodeInput.style.border = " 2px solid #800000";
     return false;
   }
 };
@@ -347,28 +381,26 @@ isValidCVV = () => {
   const text = CVVInput.value;
   const regex = /^\d{3}$/gi.test(text);
   if (regex) {
-    console.log("true");
+    $CVVLabelError.hide();
     CVVInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
-    CVVInput.style.border = " 2px solid red";
-    console.log("Needs to be properly formatted!!");
+    $CVVLabelError.show();
+    CVVInput.style.border = " 2px solid #800000";
     return false;
   }
+};
+//if Credit card is selected, then turn event listeners on.
+CCisSelected = () => {
+  CCInput.addEventListener("input", isValidCC);
+  zipCodeInput.addEventListener("input", isValidZipCode);
+  CVVInput.addEventListener("input", isValidCVV);
 };
 
 //form submission
 
 $("form").on("submit", e => {
-  const isPropSelected = selected.prop("selected");
-  // if (isPropSelected) {
-  //   if (!isValidCC() || !isValidZipCode() || !isValidCVV()) {
-  //     e.preventDefault();
-  //     return false;
-  //   } else {
-  //     return true;
-  //   }
-  // }
+  const isPropSelected = $selected.prop("selected");
 
   if (!isValidUsername() || !isValidEmail() || !isActivitiesChecked()) {
     console.log("false");
@@ -388,6 +420,3 @@ $("form").on("submit", e => {
 //event listeners
 usernameInput.addEventListener("input", isValidUsername);
 emailInput.addEventListener("input", isValidEmail);
-CCInput.addEventListener("input", isValidCC);
-zipCodeInput.addEventListener("input", isValidZipCode);
-CVVInput.addEventListener("input", isValidCVV);
