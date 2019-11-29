@@ -14,8 +14,8 @@ const $otherTitle = $("#other-title");
 const $designSelectElement = $("#design");
 const $designOptions = $("#design option");
 const $colorSelectElement = $("#color");
-const $colorOptions = document.querySelectorAll$("#color option");
-const colorOptions = [...document.querySelectorAll$("#color option")];
+const $colorOptions = $("#color option");
+const colorOptions = [...document.querySelectorAll("#color option")];
 
 //activities global vars
 const $activitiesSection = $(".activities");
@@ -81,21 +81,22 @@ $("#design > option:nth-child(1)").attr("hidden", true);
 $designSelectElement.on("change", function(e) {
   //hide the color bolierplate text on change
   $("#color > option:nth-child(1)").attr("hidden", true);
-  $colorOptions.map(element => {
-    console.log(element);
+  colorOptions.map(element => {
+    const index = colorOptions.indexOf(element);
+
     //if target value is equal to js puns, then make the second option 'selected', show the first three options, and hide the rest
+    //https://css-tricks.com/useful-nth-child-recipies/
     if ($(e.target).val() === "js puns") {
-      $("#color > option:nth-child(2)")
+      $(colorOptions[2])
         .attr("selected", true)
         .show();
-      $("#color > option:nth-child(3)").show();
-      $("#color > option:nth-child(4)").show();
+      $(colorOptions[3]).show();
+      $(colorOptions[4]).show();
 
-      $("#color > option:nth-child(5)")
+      $(colorOptions[5])
         .attr("selected", false)
         .hide();
-      $("#color > option:nth-child(6)").hide();
-      $("#color > option:nth-child(7)").hide();
+      $(colorOptions[index]).hide();
       //Else hide the first three options and make the last three visible
     } else {
       $("#color > option:nth-child(2)")
