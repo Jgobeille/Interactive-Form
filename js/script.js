@@ -1,3 +1,14 @@
+/**
+ * ====================================================================================================================
+ *
+ * Treehouse FSJS Techdegree:
+ * Project 3 - Interactive Form + Validation
+ * Student: Jamie Gobeille
+ * Date: November 28 2019
+ *
+ * ====================================================================================================================
+ */
+
 //*============================================================================================
 
 //Global vars
@@ -206,7 +217,6 @@ $paymentSection.on("change", function(e) {
     paymentArray.map(payments => {
       const index2 = paymentArray.indexOf(payments);
       if (e.target.value === "credit card") {
-        CCisSelected();
         $($paymentOptions[1]).attr("selected", true);
         $($paymentOptions[index]).removeAttr("selected");
         paymentArray[0].show();
@@ -253,8 +263,8 @@ const CVVInput = document.querySelector("#cvv");
 const selected = $("#payment option").eq(1);
 
 //name validation
-isValidUsername = e => {
-  if (e.target.value === "") {
+isValidUsername = () => {
+  if (usernameInput.value === "") {
     usernameInput.placeholder = "Cannot be empty!";
     usernameInput.style.border = " 2px solid red";
     console.log("false");
@@ -267,8 +277,8 @@ isValidUsername = e => {
 };
 
 //email Validation
-isValidEmail = email => {
-  const text = email.target.value;
+isValidEmail = () => {
+  const text = emailInput.value;
   const regex = /^[^@]+@[^@.]+\.[a-z]+$/gi.test(text);
 
   if (regex) {
@@ -283,7 +293,7 @@ isValidEmail = email => {
 };
 
 //activities Validation
-activitiesIsChecked = () => {
+isActivitiesChecked = () => {
   /* information on array.prototype.slice() && array.prototype.slice.call() found here:
         1. https://stackoverflow.com/questions/7056925/how-does-array-prototype-slice-call-work
         2. https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice
@@ -305,8 +315,8 @@ activitiesIsChecked = () => {
 };
 
 //Payment Info Validation
-isValidCC = cc => {
-  const text = cc.target.value;
+isValidCC = () => {
+  const text = CCInput.value;
   const regex = /^\d{13,16}$/gi.test(text);
   if (regex) {
     console.log("true");
@@ -319,8 +329,8 @@ isValidCC = cc => {
   }
 };
 
-isValidZipCode = zipCode => {
-  const text = zipCode.target.value;
+isValidZipCode = () => {
+  const text = zipCodeInput.value;
   const regex = /^\d{5}$/gi.test(text);
   if (regex) {
     console.log("true");
@@ -333,8 +343,8 @@ isValidZipCode = zipCode => {
   }
 };
 
-isValidCVV = cvv => {
-  const text = cvv.target.value;
+isValidCVV = () => {
+  const text = CVVInput.value;
   const regex = /^\d{3}$/gi.test(text);
   if (regex) {
     console.log("true");
@@ -347,26 +357,37 @@ isValidCVV = cvv => {
   }
 };
 
-CCisSelected = () => {
-  const isPropSelected = selected.prop("selected");
-  if (isPropSelected) {
-    CCInput.addEventListener("input", isValidCC);
-    zipCodeInput.addEventListener("input", isValidZipCode);
-    CVVInput.addEventListener("input", isValidCVV);
-  } else {
-    return false;
-  }
-};
-
 //form submission
 
 $("form").on("submit", e => {
-  e.preventDefault();
-  isValidUsername(name);
-  isValidEmail(emailInput.value);
-  activitiesIsChecked();
+  const isPropSelected = selected.prop("selected");
+  // if (isPropSelected) {
+  //   if (!isValidCC() || !isValidZipCode() || !isValidCVV()) {
+  //     e.preventDefault();
+  //     return false;
+  //   } else {
+  //     return true;
+  //   }
+  // }
+
+  if (!isValidUsername() || !isValidEmail() || !isActivitiesChecked()) {
+    console.log("false");
+    e.preventDefault();
+    return false;
+  } else if (isPropSelected) {
+    if (!isValidCC() || !isValidZipCode() || !isValidCVV()) {
+      e.preventDefault();
+      return false;
+    } else {
+      console.log("true");
+      return true;
+    }
+  }
 });
 
 //event listeners
 usernameInput.addEventListener("input", isValidUsername);
 emailInput.addEventListener("input", isValidEmail);
+CCInput.addEventListener("input", isValidCC);
+zipCodeInput.addEventListener("input", isValidZipCode);
+CVVInput.addEventListener("input", isValidCVV);
