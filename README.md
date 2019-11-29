@@ -25,7 +25,7 @@ The benefits of using jQuery are:
 - Help with cross-browser compatibility since jQuery deals with a lot of that stuff under the hood
 - A strong familiarity with jQuery will only make you a better developer since it enjoys a strong market share on the web
 
-This project is a fully-functioning example of a form a company or organization might use in their actual production website. 
+This project is a fully-functioning example of a form a company or organization might use in their actual production website.
 
 ## Technology Used
 
@@ -48,11 +48,11 @@ Non-obtrusive:
 This project has several interesting features to aid with error handling
 
 1. Real-time error handling
-    - Every input has error handling that checks on input of data to give real time feedback to user
+   - Every input has error handling that checks on input of data to give real time feedback to user
 2. Regex Validation
-    - regex is used to ensure proper characters/formatting is used in each input
+   - regex is used to ensure proper characters/formatting is used in each input
 3. Non-obtrusive JS & jQuery
-    - The form uses "non-obtrusive" JS & jQuery so that even if the user has JS turned off, the form will still operate as intended
+   - The form uses "non-obtrusive" JS & jQuery so that even if the user has JS turned off, the form will still operate as intended
 
 ## Code Example
 
@@ -90,13 +90,10 @@ This is an example using a mix of Vanilla JS written with modern ES6 syntax aide
 
 ---
 
-![Project%203%20Readme/real_time_error_handling.png](Project%203%20Readme/real_time_error_handling.png)
-
-![Project%203%20Readme/project_3_screenshot_2.png](Project%203%20Readme/project_3_screenshot_2.png)
-
-![Project%203%20Readme/project_3_screenshot_3.png](Project%203%20Readme/project_3_screenshot_3.png)
-
-![Project%203%20Readme/project_3_screenshot_4.png](Project%203%20Readme/project_3_screenshot_4.png)
+project_3_screenshot_2.png
+project_3_screenshot_3.png
+project_3_screenshot_4.png
+real_time_error_handling.png
 
 ## License
 
