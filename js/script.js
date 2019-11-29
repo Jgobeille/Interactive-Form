@@ -16,6 +16,8 @@ const $designOptions = $("#design option");
 const $colorSelectElement = $("#color");
 const $colorOptions = $("#color option");
 const colorOptions = [...document.querySelectorAll("#color option")];
+//select the first three options
+const option1st2ndAnd3rd = colorOptions.slice(0, 3);
 
 //activities global vars
 const $activitiesSection = $(".activities");
@@ -76,7 +78,7 @@ $colorSelectElement.prepend(
 //set all the color options to hidden
 $colorOptions.attr("hidden", true);
 //hide the design bolierplate text
-$("#design > option:nth-child(1)").attr("hidden", true);
+$designOptions.eq(0).attr("hidden", true);
 //when the selection changes in design selection box, perform functions
 $designSelectElement.on("change", function(e) {
   //hide the color bolierplate text on change
@@ -87,29 +89,24 @@ $designSelectElement.on("change", function(e) {
     //if target value is equal to js puns, then make the second option 'selected', show the first three options, and hide the rest
     //https://css-tricks.com/useful-nth-child-recipies/
     if ($(e.target).val() === "js puns") {
-      $(colorOptions[2])
+      $(colorOptions[0])
         .attr("selected", true)
         .show();
-      $(colorOptions[3]).show();
-      $(colorOptions[4]).show();
-
-      $(colorOptions[5])
+      $(option1st2ndAnd3rd).show();
+      $(colorOptions[3])
         .attr("selected", false)
         .hide();
       $(colorOptions[index]).hide();
       //Else hide the first three options and make the last three visible
     } else {
-      $("#color > option:nth-child(2)")
+      $(colorOptions[0])
         .attr("selected", false)
         .hide();
-      $("#color > option:nth-child(3)").hide();
-      $("#color > option:nth-child(4)").hide();
-
-      $("#color > option:nth-child(5)")
+      $(option1st2ndAnd3rd).hide();
+      $(colorOptions[3])
         .attr("selected", true)
         .show();
-      $("#color > option:nth-child(6)").show();
-      $("#color > option:nth-child(7)").show();
+      $(colorOptions[index]).show();
     }
   });
 });
@@ -205,11 +202,11 @@ bitcoin.hide();
 //add change listener on payment options
 $paymentSection.on("change", function(e) {
   $paymentOptions.map(element => {
-    console.log(element);
     const index = $paymentOptions.indexOf(element);
     paymentArray.map(payments => {
       const index2 = paymentArray.indexOf(payments);
       if (e.target.value === "credit card") {
+        isValidPayment();
         $($paymentOptions[1]).attr("selected", true);
         $($paymentOptions[index]).removeAttr("selected");
         paymentArray[0].show();
@@ -253,27 +250,30 @@ const emailInput = document.querySelector("#mail");
 const CCInput = document.querySelector("#cc-num");
 const zipCodeInput = document.querySelector("#zip");
 const CVVInput = document.querySelector("#cvv");
-const selected = $("#payment > option:nth-child(2)");
+const selected = $("#payment option").eq(1);
 
 //name validation
 isValidUsername = e => {
   if (e.target.value === "") {
     usernameInput.placeholder = "Cannot be empty!";
     usernameInput.style.border = " 2px solid red";
+    console.log("false");
     return false;
   } else {
     usernameInput.style.border = "2px solid rgb(111, 157, 220)";
+    console.log("true");
     return true;
   }
 };
 
 //email Validation
 isValidEmail = email => {
+  console.log(email);
   const text = email.target.value;
   const regex = /^[^@]+@[^@.]+\.[a-z]+$/gi.test(text);
 
   if (regex) {
-    console.log("good");
+    console.log("true");
     emailInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
@@ -297,10 +297,10 @@ activitiesIsChecked = () => {
     .call(activitiesCheckboxes)
     .some(x => x.checked);
   if (checkedOne) {
-    console.log("good");
+    console.log("true");
     return true;
   } else {
-    console.log("bad");
+    console.log("false");
     return false;
   }
 };
@@ -310,7 +310,7 @@ isValidCC = cc => {
   const text = cc.target.value;
   const regex = /^\d{13,16}$/gi.test(text);
   if (regex) {
-    console.log("good");
+    console.log("true");
     CCInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
@@ -324,7 +324,7 @@ isValidZipCode = zipCode => {
   const text = zipCode.target.value;
   const regex = /^\d{5}$/gi.test(text);
   if (regex) {
-    console.log("good");
+    console.log("true");
     zipCodeInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
@@ -338,7 +338,7 @@ isValidCVV = cvv => {
   const text = cvv.target.value;
   const regex = /^\d{3}$/gi.test(text);
   if (regex) {
-    console.log("good");
+    console.log("true");
     CVVInput.style.border = "2px solid rgb(111, 157, 220)";
     return true;
   } else {
@@ -355,22 +355,21 @@ isValidPayment = () => {
     zipCodeInput.addEventListener("input", isValidZipCode);
     CVVInput.addEventListener("input", isValidCVV);
   } else {
-    return true;
+    return false;
   }
 };
 
-//button stop submit
-const $button = $("button");
+//form submission
 
-$button.click(e => {
+$("form").on("submit", e => {
+  const name = usernameInput.value;
+  console.log(name);
   e.preventDefault();
+  isValidUsername(name);
+  isValidEmail(emailInput.value);
   activitiesIsChecked();
-  isValidPayment();
 });
 
 //event listeners
 usernameInput.addEventListener("input", isValidUsername);
 emailInput.addEventListener("input", isValidEmail);
-CCInput.addEventListener("input", isValidCC);
-zipCodeInput.addEventListener("input", isValidZipCode);
-CVVInput.addEventListener("input", isValidCVV);
