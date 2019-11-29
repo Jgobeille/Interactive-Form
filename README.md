@@ -90,10 +90,10 @@ This is an example using a mix of Vanilla JS written with modern ES6 syntax aide
 
 ---
 
-project_3_screenshot_2.png
-project_3_screenshot_3.png
-project_3_screenshot_4.png
-real_time_error_handling.png
+![Image description](real_time_error_handling.png)
+![Image description](project_3_screenshot_2.png)
+![Image description](project_3_screenshot_3.png)
+![Image description](project_3_screenshot_4.png)
 
 ## License
 
