@@ -154,21 +154,21 @@ $designSelectElement.on("change", function(e) {
     //https://css-tricks.com/useful-nth-child-recipies/
     if ($(e.target).val() === "metal lovers") {
       $(colorOptions[0])
-        .attr("selected", true)
+        .prop("selected", true)
         .show();
       $(option1st2ndAnd3rd).show();
       $(colorOptions[3])
-        .attr("selected", false)
+        .prop("selected", false)
         .hide();
       $(colorOptions[index]).hide();
       //Else hide the first three options and make the last three visible
     } else {
       $(colorOptions[0])
-        .attr("selected", false)
+        .prop("selected", false)
         .hide();
       $(option1st2ndAnd3rd).hide();
       $(colorOptions[3])
-        .attr("selected", true)
+        .prop("selected", true)
         .show();
       $(colorOptions[index]).show();
     }
