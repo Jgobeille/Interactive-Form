@@ -26,6 +26,7 @@ const $designSelectElement = $("#design");
 const $designOptions = $("#design option");
 const $colorSelectElement = $("#color");
 const $colorOptions = $("#color option");
+const $colorSelection = $("#colors-js-puns");
 const colorOptions = [...document.querySelectorAll("#color option")];
 //select the first three options
 const option1st2ndAnd3rd = colorOptions.slice(0, 3);
@@ -41,12 +42,12 @@ const activitiesTextContent = [
 let totalCost = 0;
 
 //Payment section global vars
-const $paymentOptions = [...document.querySelectorAll("#payment option")];
+const paymentOptions = [...document.querySelectorAll("#payment option")];
 const $paymentSection = $("#payment");
 const selectPaymentMethod = document.querySelector(
   "#payment > option:nth-child(1)"
 );
-let creditCard = $("#credit-card");
+const creditCard = $("#credit-card");
 const payPal = $("#paypal");
 const bitcoin = $("#bitcoin");
 const paymentArray = [creditCard, payPal, bitcoin];
@@ -78,14 +79,24 @@ const $emailLabelError = $(
 const $activitiesLegendError = $(
   '<span class="error"> At least one activity must be checked</span>'
 ).hide();
-const $CCLabelError = $(
-  '<li class="payment-error">Must be 13-16 digits long</li>'
+
+const $CCLabelZeroError = $(
+  '<li class="payment-error">A credit card number must be entered</li>'
+).hide();
+const $CCLabelTooShortError = $(
+  '<li class="payment-error">Your number is too short. Must be 13-16 digits long</li>'
+).hide();
+const $CCLabelTooLongError = $(
+  '<li class="payment-error">Your number is too long. Must be 13-16 digits long</li>'
 ).hide();
 const $zipCodeLabelError = $(
   '<li class="payment-error">Must be 5 digits long</li>'
 ).hide();
 const $CVVLabelError = $(
   '<li class="payment-error">Must be 3 digits long</li>'
+).hide();
+const $notNumbersError = $(
+  '<li class="payment-error">Only Numbers can be used here</li>'
 ).hide();
 
 //*============================================================================================
@@ -125,6 +136,8 @@ $colorSelectElement.prepend(
   '<option value="select" selected="selected"> Please select a T-shirt theme</option>'
 );
 
+//hide color selection box on pageload
+$colorSelection.hide();
 //set all the color options to hidden
 $colorOptions.attr("hidden", true);
 //hide the design bolierplate text
@@ -135,10 +148,11 @@ $designSelectElement.on("change", function(e) {
   $("#color > option:nth-child(1)").attr("hidden", true);
   colorOptions.map(element => {
     const index = colorOptions.indexOf(element);
-
+    //show color selection when page is shown
+    $colorSelection.fadeIn();
     //if target value is equal to js puns, then make the second option 'selected', show the first three options, and hide the rest
     //https://css-tricks.com/useful-nth-child-recipies/
-    if ($(e.target).val() === "js puns") {
+    if ($(e.target).val() === "metal lovers") {
       $(colorOptions[0])
         .attr("selected", true)
         .show();
@@ -194,7 +208,7 @@ $(".activities").on("change", function(e) {
     totalCost += parsedNum;
     //append total to page
     $activitiesSection.append(`<div class="total">Total: $ ${totalCost}</div>`);
-  } else {
+  } else if (!clicked.checked) {
     totalCost -= parsedNum;
     //append total to page
     $activitiesSection.append(`<div class="total">Total: $ ${totalCost}</div>`);
@@ -208,6 +222,7 @@ $(".activities").on("change", function(e) {
       const eventDayAndTime = activitiesCheckboxes[index].getAttribute(
         "data-day-and-time"
       );
+
       const name = activitiesCheckboxes[index].getAttribute("name");
       const textColor = activitiesTextContent[index];
 
@@ -215,14 +230,25 @@ $(".activities").on("change", function(e) {
         //check if same date and time and if clickedName is not equal to name
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
           //disable matches
+          activitiesCheckboxes[0].setAttribute("disabled", "true");
           activitiesCheckboxes[index].setAttribute("disabled", "true");
 
+          textColor.style.color = "#60685C";
+        }
+        if (clickedDayAndTime === "Weekend") {
+          activitiesCheckboxes[index].setAttribute("disabled", "true");
+          activitiesCheckboxes[0].removeAttribute("disabled");
           textColor.style.color = "#60685C";
         }
       }
       //if clicked is unchecked, re-enable buttons
       if (!clicked.checked) {
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+          activitiesCheckboxes[0].removeAttribute("disabled");
+          activitiesCheckboxes[index].removeAttribute("disabled");
+          textColor.style.color = "#000";
+        }
+        if (clickedDayAndTime === "Weekend") {
           activitiesCheckboxes[index].removeAttribute("disabled");
           textColor.style.color = "#000";
         }
@@ -249,28 +275,28 @@ Main tasks:
 //hide payment option from list, but display it as first option
 selectPaymentMethod.setAttribute("hidden", true);
 //select qnd hide all the options
+$selected.attr("selected", true);
 payPal.hide();
 bitcoin.hide();
 //add change listener on payment options
 $paymentSection.on("change", e => {
-  $paymentOptions.map(element => {
-    const index = $paymentOptions.indexOf(element);
+  paymentOptions.map(element => {
+    const index = paymentOptions.indexOf(element);
     paymentArray.map(payments => {
       const index2 = paymentArray.indexOf(payments);
       if (e.target.value === "credit card") {
-        CCisSelected();
-        $($paymentOptions[1]).attr("selected", true);
-        $($paymentOptions[index]).removeAttr("selected");
+        $(paymentOptions[1]).attr("selected", true);
+        $(paymentOptions[index]).removeAttr("selected");
         paymentArray[0].show();
         paymentArray[index2].hide();
       } else if (e.target.value === "paypal") {
-        $($paymentOptions[2]).attr("selected", true);
-        $($paymentOptions[index]).removeAttr("selected");
+        $(paymentOptions[2]).attr("selected", true);
+        $(paymentOptions[index]).removeAttr("selected");
         paymentArray[1].show();
         paymentArray[index2].hide();
       } else {
-        $($paymentOptions[index]).removeAttr("selected");
-        $($paymentOptions[3]).attr("selected", true);
+        $(paymentOptions[index]).removeAttr("selected");
+        $(paymentOptions[3]).attr("selected", true);
         paymentArray[index2].hide();
         paymentArray[2].show();
       }
@@ -300,19 +326,22 @@ Main Tasks:
 $nameLabel.append($nameLabelError);
 $emailLabel.append($emailLabelError);
 $activitiesLegend.append($activitiesLegendError);
-$paymentLabel.append($CCLabelError);
+$paymentLabel.append($CCLabelZeroError);
+$paymentLabel.append($CCLabelTooShortError);
+$paymentLabel.append($CCLabelTooLongError);
 $paymentLabel.append($zipCodeLabelError);
 $paymentLabel.append($CVVLabelError);
+$paymentLabel.append($notNumbersError);
 
 //name validation
 isValidUsername = () => {
   if (usernameInput.value === "") {
     $nameLabelError.show();
-    usernameInput.style.border = " 2px solid #800000";
+    usernameInput.style.border = " 2px solid #F00";
     return false;
   } else {
     $nameLabelError.hide();
-    usernameInput.style.border = "2px solid rgb(111, 157, 220)";
+    usernameInput.style.border = "2px solid #5A0001";
     return true;
   }
 };
@@ -323,11 +352,11 @@ isValidEmail = () => {
   const regex = /^[^@]+@[^@.]+\.[a-z]+$/gi.test(text);
   if (regex) {
     $emailLabelError.hide();
-    emailInput.style.border = "2px solid rgb(111, 157, 220)";
+    emailInput.style.border = "2px solid #5A0001";
     return true;
   } else {
     $emailLabelError.show();
-    emailInput.style.border = " 2px solid #800000";
+    emailInput.style.border = " 2px solid #F00";
     return false;
   }
 };
@@ -353,18 +382,46 @@ isActivitiesChecked = () => {
   }
 };
 
+errorLabelMaker = errorText => {
+  const errorMessage = $(`<li class="payment-error">${errorText}</li>`);
+  console.log(errorMessage);
+  return errorMessage;
+};
+
 //Payment Info Validation
 isValidCC = () => {
   const text = CCInput.value;
-  const regex = /^\d{13,16}$/gi.test(text);
-  if (regex) {
-    $CCLabelError.hide();
-    CCInput.style.border = "2px solid rgb(111, 157, 220)";
+  const correct = /^\d{13,16}$/gi.test(text);
+  const tooShort = /^\d{1,12}$/gi.test(text);
+  const tooLong = /^\d{17,}$/gi.test(text);
+  const notNumbers = /^[\D\w]+/gi.test(text);
+  if (correct) {
+    $CCLabelTooShortError.hide();
+    $CCLabelTooLongError.hide();
+    $notNumbersError.hide();
+    CCInput.style.border = "2px solid #5A0001";
     return true;
-  } else {
-    CCInput.style.border = " 2px solid #800000";
-    $CCLabelError.show();
+  } else if (tooShort) {
+    CCInput.style.border = " 2px solid #F00";
+    $CCLabelTooShortError.show();
+    $CCLabelZeroError.hide();
     return false;
+  } else if (tooLong) {
+    CCInput.style.border = " 2px solid #F00";
+    $CCLabelTooLongError.show();
+    $CCLabelTooShortError.hide();
+    return false;
+  } else if (notNumbers) {
+    $CCLabelTooShortError.hide();
+    $CCLabelTooLongError.hide();
+    $notNumbersError.show();
+    $CCLabelZeroError.hide();
+  } else {
+    $CCLabelTooShortError.hide();
+    $CCLabelTooLongError.hide();
+    $notNumbersError.hide();
+    $CCLabelZeroError.show();
+    CCInput.style.border = "2px solid #F00";
   }
 };
 
@@ -373,11 +430,11 @@ isValidZipCode = () => {
   const regex = /^\d{5}$/gi.test(text);
   if (regex) {
     $zipCodeLabelError.hide();
-    zipCodeInput.style.border = "2px solid rgb(111, 157, 220)";
+    zipCodeInput.style.border = "2px solid #5A0001";
     return true;
   } else {
     $zipCodeLabelError.show();
-    zipCodeInput.style.border = " 2px solid #800000";
+    zipCodeInput.style.border = " 2px solid #F00";
     return false;
   }
 };
@@ -387,19 +444,13 @@ isValidCVV = () => {
   const regex = /^\d{3}$/gi.test(text);
   if (regex) {
     $CVVLabelError.hide();
-    CVVInput.style.border = "2px solid rgb(111, 157, 220)";
+    CVVInput.style.border = "2px solid #5A0001";
     return true;
   } else {
     $CVVLabelError.show();
-    CVVInput.style.border = " 2px solid #800000";
+    CVVInput.style.border = " 2px solid #F00";
     return false;
   }
-};
-//if Credit card is selected, then turn event listeners on.
-CCisSelected = () => {
-  CCInput.addEventListener("input", isValidCC);
-  zipCodeInput.addEventListener("input", isValidZipCode);
-  CVVInput.addEventListener("input", isValidCVV);
 };
 
 //form submission
@@ -408,7 +459,6 @@ $("form").on("submit", e => {
   const isPropSelected = $selected.prop("selected");
 
   if (!isValidUsername() || !isValidEmail() || !isActivitiesChecked()) {
-    console.log("false");
     e.preventDefault();
     return false;
   } else if (isPropSelected) {
@@ -416,7 +466,6 @@ $("form").on("submit", e => {
       e.preventDefault();
       return false;
     } else {
-      console.log("true");
       return true;
     }
   }
@@ -425,3 +474,14 @@ $("form").on("submit", e => {
 //event listeners
 usernameInput.addEventListener("input", isValidUsername);
 emailInput.addEventListener("input", isValidEmail);
+CCInput.addEventListener("input", isValidCC);
+zipCodeInput.addEventListener("input", isValidZipCode);
+CVVInput.addEventListener("input", isValidCVV);
+
+/*
+Additional things to do:
+1.) Re-write validation to not be so wet. Hard coding the validation messages into the HTML
+and then run a function that hides and shows the text when necessary.
+2.) adding additional validation checks to rest of form
+3.) Re-Design the form.
+*/

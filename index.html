@@ -4,8 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Register for Full Stack Conf</title>
+  <title>Register for Ohio MetalFest!</title>
   <link rel="stylesheet" href="css/style.css">
+  <link href="https://fonts.googleapis.com/css?family=Metal+Mania&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -13,8 +14,12 @@
 
     <header>
       <span>Register for</span>
-      <h1>Full Stack Conf</h1>
+      <h1>Ohio Metal Fest 2019!</h1>
     </header>
+    <div>
+      <img class='flyer' src="Flyer.jpg">
+
+    </div>
 
     <form action="index.html" method="post" novalidate>
 
@@ -28,16 +33,16 @@
         <label for="mail">Email: </label>
         <input type="email" id="mail" name="user-email">
 
-        <label for="title">Job Role</label>
+        <label for="title">How Did You Hear About This?</label>
         <select id="title" name="user-title">
-          <option value="full-stack js developer">Full Stack JavaScript Developer</option>
-          <option value="front-end developer">Front End Developer</option>
-          <option value="back-end developer">Back End Developer</option>
-          <option value="designer">Designer</option>
-          <option value="student">Student</option>
+          <option value="online">Online</option>
+          <option value="flyer">Flyer</option>
+          <option value="word of mouth">Word of mouth</option>
+          <option value="TV">TV Advertisement</option>
+          <option value="none of your business">None of your d*** business</option>
           <option value="other">Other</option>
         </select>
-        <input type="text" id="other-title" placeholder="Your Job Role">
+        <input type="text" id="other-title" placeholder="Don't lie to us. We can read your mind">
       </fieldset>
 
       <fieldset class="shirt">
@@ -58,20 +63,20 @@
             <label for="design">Design:</label>
             <select id="design" name="user-design">
               <option>Select Theme</option>
-              <option value="js puns">Theme - JS Puns</option>
-              <option value="heart js">Theme - I &#9829; JS</option>
+              <option value="metal lovers">Ohio is For Metal Lovers</option>
+              <option value="tech death">I &#9829; TechDeath</option>
             </select>
           </div>
 
           <div id="colors-js-puns" class="">
             <label for="color">Color:</label>
             <select id="color">
-              <option value="cornflowerblue">Cornflower Blue (JS Puns shirt only)</option>
-              <option value="darkslategrey">Dark Slate Grey (JS Puns shirt only)</option>
-              <option value="gold">Gold (JS Puns shirt only)</option>
-              <option value="tomato">Tomato (I &#9829; JS shirt only)</option>
-              <option value="steelblue">Steel Blue (I &#9829; JS shirt only)</option>
-              <option value="dimgrey">Dim Grey (I &#9829; JS shirt only)</option>
+              <option value="black">Black (Metal Lovers shirt only)</option>
+              <option value="Maroon">Blood Red (Metal Lovers shirt only)</option>
+              <option value="White">(Metal Lovers shirt only)</option>
+              <option value="tie-dye">Tie Dye (I &#9829; TechDeath shirt only)</option>
+              <option value="blue">Blue (I &#9829; TechDeath shirt only)</option>
+              <option value="grey">Grey (I &#9829; TechDeath shirt only)</option>
             </select>
           </div>
         </div>
@@ -80,31 +85,32 @@
       <fieldset class="activities">
         <legend>Register for Activities </legend>
         <label>
-          <input type="checkbox" name="all" data-cost="200"> Main Conference — $200
+          <input type="checkbox" name="Weekend" data-day-and-time="Weekend" data-cost="150"> All Weekend Tickets + Both
+          Shirts — $150
         </label>
         <label>
-          <input type="checkbox" name="js-frameworks" data-day-and-time="Tuesday 9am-12pm" data-cost="100">
-          JavaScript Frameworks Workshop — Tuesday 9am-12pm, $100
+          <input type="checkbox" name="Friday" data-day-and-time="Friday" data-cost="50">
+          Friday Only Ticket, $50
         </label>
         <label>
-          <input type="checkbox" name="js-libs" data-day-and-time="Tuesday 1pm-4pm" data-cost="100">
-          JavaScript Libraries Workshop — Tuesday 1pm-4pm, $100
+          <input type="checkbox" name="Saturday" data-day-and-time="Saturday" data-cost="50">
+          Saturday Only Ticket, $50
         </label>
         <label>
-          <input type="checkbox" name="express" data-day-and-time="Tuesday 9am-12pm" data-cost="100">
-          Express Workshop — Tuesday 9am-12pm, $100
+          <input type="checkbox" name="Sunday" data-day-and-time="Sunday" data-cost="50">
+          Sunday Only Ticket, $50
         </label>
         <label>
-          <input type="checkbox" name="node" data-day-and-time="Tuesday 1pm-4pm" data-cost="100">
-          Node.js Workshop — Tuesday 1pm-4pm, $100
+          <input type="checkbox" name="Friday & Both T-shirts" data-day-and-time="Friday" data-cost="75">
+          Friday Only Ticket + Both Shirts, $75
         </label>
         <label>
-          <input type="checkbox" name="build-tools" data-day-and-time="Wednesday 9am-12pm" data-cost="100">
-          Build tools Workshop — Wednesday 9am-12pm, $100
+          <input type="checkbox" name="Saturday & Both T-shirts" data-day-and-time="Saturday" data-cost="75">
+          Saturday Only Ticket + Both Shirts, $75
         </label>
         <label>
-          <input type="checkbox" name="npm" data-day-and-time="Wednesday 1pm-4pm" data-cost="100">
-          npm Workshop — Wednesday 1pm-4pm, $100
+          <input type="checkbox" name="Sunday & Both T-shirts" data-day-and-time="Sunday" data-cost="75">
+          Sunday Only Ticket + Both Shirts, $75
         </label>
 
       </fieldset>
