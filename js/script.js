@@ -326,12 +326,13 @@ Main Tasks:
 $nameLabel.append($nameLabelError);
 $emailLabel.append($emailLabelError);
 $activitiesLegend.append($activitiesLegendError);
-$paymentLabel.append($CCLabelZeroError);
-$paymentLabel.append($CCLabelTooShortError);
-$paymentLabel.append($CCLabelTooLongError);
-$paymentLabel.append($zipCodeLabelError);
-$paymentLabel.append($CVVLabelError);
-$paymentLabel.append($notNumbersError);
+$paymentLabel
+  .append($CCLabelZeroError)
+  .append($CCLabelTooShortError)
+  .append($CCLabelTooLongError)
+  .append($zipCodeLabelError)
+  .append($CVVLabelError)
+  .append($notNumbersError);
 
 //name validation
 isValidUsername = () => {
