@@ -225,11 +225,11 @@ $(".activities").on("change", function(e) {
 
       const name = activitiesCheckboxes[index].getAttribute("name");
       const textColor = activitiesTextContent[index];
-
       if (clicked.checked) {
         //check if same date and time and if clickedName is not equal to name
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
           //disable matches
+          $("fieldset.activities > label:nth-child(2)").css("color", "#60685C");
           activitiesCheckboxes[0].setAttribute("disabled", "true");
           activitiesCheckboxes[index].setAttribute("disabled", "true");
 
@@ -237,6 +237,7 @@ $(".activities").on("change", function(e) {
         }
         if (clickedDayAndTime === "Weekend") {
           activitiesCheckboxes[index].setAttribute("disabled", "true");
+          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
           activitiesCheckboxes[0].removeAttribute("disabled");
           textColor.style.color = "#60685C";
         }
@@ -245,10 +246,12 @@ $(".activities").on("change", function(e) {
       if (!clicked.checked) {
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
           activitiesCheckboxes[0].removeAttribute("disabled");
+          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
           activitiesCheckboxes[index].removeAttribute("disabled");
           textColor.style.color = "#000";
         }
         if (clickedDayAndTime === "Weekend") {
+          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
           activitiesCheckboxes[index].removeAttribute("disabled");
           textColor.style.color = "#000";
         }
@@ -280,6 +283,7 @@ payPal.hide();
 bitcoin.hide();
 //add change listener on payment options
 $paymentSection.on("change", e => {
+  //hide all error messages and reset input borders in payment option on change
   $CCLabelTooShortError.hide();
   $CCLabelTooLongError.hide();
   $notNumbersError.hide();
@@ -289,14 +293,18 @@ $paymentSection.on("change", e => {
   CCInput.style.border = "2px solid #5A0001";
   zipCodeInput.style.border = "2px solid #5A0001";
   CVVInput.style.border = "2px solid #5A0001";
+
   paymentOptions.map(element => {
+    //gives index position of all payment options in array
     const index = paymentOptions.indexOf(element);
     paymentArray.map(payments => {
+      //gives index position of all payment elements in array
       const index2 = paymentArray.indexOf(payments);
       if (e.target.value === "credit card") {
         $(paymentOptions[1]).attr("selected", true);
         $(paymentOptions[index]).removeAttr("selected");
         paymentArray[0].show();
+        //hides the rest
         paymentArray[index2].hide();
       } else if (e.target.value === "paypal") {
         $(paymentOptions[2]).attr("selected", true);
@@ -392,12 +400,6 @@ isActivitiesChecked = () => {
   }
 };
 
-errorLabelMaker = errorText => {
-  const errorMessage = $(`<li class="payment-error">${errorText}</li>`);
-  console.log(errorMessage);
-  return errorMessage;
-};
-
 //Payment Info Validation
 isValidCC = () => {
   const text = CCInput.value;
@@ -435,6 +437,7 @@ isValidCC = () => {
   }
 };
 
+//zipcode validation
 isValidZipCode = () => {
   const text = zipCodeInput.value;
   const regex = /^\d{5}$/gi.test(text);
@@ -449,6 +452,7 @@ isValidZipCode = () => {
   }
 };
 
+//CVV Validation
 isValidCVV = () => {
   const text = CVVInput.value;
   const regex = /^\d{3}$/gi.test(text);
@@ -469,10 +473,12 @@ $("form").on("submit", e => {
   const isPropSelected = $selected.prop("selected");
 
   if (!isValidUsername() || !isValidEmail() || !isActivitiesChecked()) {
+    //runs each function to show where all the errors are
     isValidUsername();
     isValidEmail();
     isActivitiesChecked();
   }
+  //if checks if credit card is the selected option, then runs the rest of the payment validations
   if (isPropSelected) {
     if (!isValidCC() || !isValidZipCode() || !isValidCVV()) {
       isValidCC();
@@ -499,5 +505,4 @@ Additional things to do:
 1.) Re-write validation to not be so wet. Hard coding the validation messages into the HTML
 and then run a function that hides and shows the text when necessary.
 2.) adding additional validation checks to rest of form
-3.) Re-Design the form.
 */
