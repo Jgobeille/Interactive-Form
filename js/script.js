@@ -280,6 +280,15 @@ payPal.hide();
 bitcoin.hide();
 //add change listener on payment options
 $paymentSection.on("change", e => {
+  $CCLabelTooShortError.hide();
+  $CCLabelTooLongError.hide();
+  $notNumbersError.hide();
+  $CCLabelZeroError.hide();
+  $zipCodeLabelError.hide();
+  $CVVLabelError.hide();
+  CCInput.style.border = "2px solid #5A0001";
+  zipCodeInput.style.border = "2px solid #5A0001";
+  CVVInput.style.border = "2px solid #5A0001";
   paymentOptions.map(element => {
     const index = paymentOptions.indexOf(element);
     paymentArray.map(payments => {
@@ -460,10 +469,16 @@ $("form").on("submit", e => {
   const isPropSelected = $selected.prop("selected");
 
   if (!isValidUsername() || !isValidEmail() || !isActivitiesChecked()) {
-    e.preventDefault();
-    return false;
-  } else if (isPropSelected) {
+    isValidUsername();
+    isValidEmail();
+    isActivitiesChecked();
+  }
+  if (isPropSelected) {
     if (!isValidCC() || !isValidZipCode() || !isValidCVV()) {
+      isValidCC();
+      isValidZipCode();
+      isValidCVV();
+
       e.preventDefault();
       return false;
     } else {
