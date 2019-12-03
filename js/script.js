@@ -40,6 +40,7 @@ const activitiesTextContent = [
   ...document.querySelectorAll(".activities label")
 ];
 let totalCost = 0;
+let clickedItems = 0;
 
 //Payment section global vars
 const paymentOptions = [...document.querySelectorAll("#payment option")];
@@ -234,27 +235,38 @@ $(".activities").on("change", function(e) {
           activitiesCheckboxes[index].setAttribute("disabled", "true");
 
           textColor.style.color = "#60685C";
+          clickedItems += 1;
+          console.log(clickedItems);
         }
         if (clickedDayAndTime === "Weekend") {
           activitiesCheckboxes[index].setAttribute("disabled", "true");
           $("fieldset.activities > label:nth-child(2)").css("color", "#000");
           activitiesCheckboxes[0].removeAttribute("disabled");
           textColor.style.color = "#60685C";
+          console.log(clickedItems);
         }
       }
       //if clicked is unchecked, re-enable buttons
       if (!clicked.checked) {
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
+          activitiesCheckboxes[index].removeAttribute("disabled");
+          activitiesCheckboxes[0].removeAttribute("disabled");
+          textColor.style.color = "#000";
+          clickedItems -= 1;
+          console.log(clickedItems);
+        }
+        if (clickedDayAndTime === "Weekend") {
           activitiesCheckboxes[0].removeAttribute("disabled");
           $("fieldset.activities > label:nth-child(2)").css("color", "#000");
           activitiesCheckboxes[index].removeAttribute("disabled");
           textColor.style.color = "#000";
         }
-        if (clickedDayAndTime === "Weekend") {
-          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
-          activitiesCheckboxes[index].removeAttribute("disabled");
-          textColor.style.color = "#000";
-        }
+      }
+      if (clickedItems >= 1) {
+        activitiesCheckboxes[0].setAttribute("disabled", true);
+        $("fieldset.activities > label:nth-child(2)").css("color", "#60685C");
+        console.log(clickedItems);
       }
     });
   });
