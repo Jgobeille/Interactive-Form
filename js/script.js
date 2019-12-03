@@ -227,6 +227,7 @@ $(".activities").on("change", function(e) {
       const name = activitiesCheckboxes[index].getAttribute("name");
       const textColor = activitiesTextContent[index];
       if (clicked.checked) {
+        $activitiesLegendError.hide();
         //check if same date and time and if clickedName is not equal to name
         if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
           //disable matches
@@ -236,14 +237,12 @@ $(".activities").on("change", function(e) {
 
           textColor.style.color = "#60685C";
           clickedItems += 1;
-          console.log(clickedItems);
         }
         if (clickedDayAndTime === "Weekend") {
           activitiesCheckboxes[index].setAttribute("disabled", "true");
           $("fieldset.activities > label:nth-child(2)").css("color", "#000");
           activitiesCheckboxes[0].removeAttribute("disabled");
           textColor.style.color = "#60685C";
-          console.log(clickedItems);
         }
       }
       //if clicked is unchecked, re-enable buttons
@@ -254,7 +253,6 @@ $(".activities").on("change", function(e) {
           activitiesCheckboxes[0].removeAttribute("disabled");
           textColor.style.color = "#000";
           clickedItems -= 1;
-          console.log(clickedItems);
         }
         if (clickedDayAndTime === "Weekend") {
           activitiesCheckboxes[0].removeAttribute("disabled");
