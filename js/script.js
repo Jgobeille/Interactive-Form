@@ -147,8 +147,7 @@ $designOptions.eq(0).attr("hidden", true);
 $designSelectElement.on("change", function(e) {
   //hide the color bolierplate text on change
   $("#color > option:nth-child(1)").attr("hidden", true);
-  colorOptions.map(element => {
-    const index = colorOptions.indexOf(element);
+  colorOptions.map((element, i) => {
     //show color selection when page is shown
     $colorSelection.fadeIn();
     //if target value is equal to js puns, then make the second option 'selected', show the first three options, and hide the rest
@@ -161,7 +160,7 @@ $designSelectElement.on("change", function(e) {
       $(colorOptions[3])
         .prop("selected", false)
         .hide();
-      $(colorOptions[index]).hide();
+      $(colorOptions[i]).hide();
       //Else hide the first three options and make the last three visible
     } else {
       $(colorOptions[0])
@@ -171,7 +170,7 @@ $designSelectElement.on("change", function(e) {
       $(colorOptions[3])
         .prop("selected", true)
         .show();
-      $(colorOptions[index]).show();
+      $(colorOptions[i]).show();
     }
   });
 });
@@ -208,65 +207,57 @@ $(".activities").on("change", function(e) {
   if (clicked.checked) {
     totalCost += parsedNum;
     //append total to page
-    $activitiesSection.append(`<div class="total">Total: $ ${totalCost}</div>`);
+    $activitiesSection.append(`<div class='total'>Total: $ ${totalCost}</div>`);
   } else if (!clicked.checked) {
     totalCost -= parsedNum;
     //append total to page
-    $activitiesSection.append(`<div class="total">Total: $ ${totalCost}</div>`);
+    $activitiesSection.append(`<div class='total'>Total: $ ${totalCost}</div>`);
   }
 
   //loop over all the checkboxes
-  activitiesCheckboxes.map(element => {
-    const index = activitiesCheckboxes.indexOf(element);
-    activitiesTextContent.map(() => {
-      //get important data-types
-      const eventDayAndTime = activitiesCheckboxes[index].getAttribute(
-        "data-day-and-time"
-      );
-
-      const name = activitiesCheckboxes[index].getAttribute("name");
-      const textColor = activitiesTextContent[index];
-      if (clicked.checked) {
-        $activitiesLegendError.hide();
-        //check if same date and time and if clickedName is not equal to name
-        if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
-          //disable matches
-          $("fieldset.activities > label:nth-child(2)").css("color", "#60685C");
-          activitiesCheckboxes[0].setAttribute("disabled", "true");
-          activitiesCheckboxes[index].setAttribute("disabled", "true");
-
-          textColor.style.color = "#60685C";
-          clickedItems += 1;
-        }
-        if (clickedDayAndTime === "Weekend") {
-          activitiesCheckboxes[index].setAttribute("disabled", "true");
-          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
-          activitiesCheckboxes[0].removeAttribute("disabled");
-          textColor.style.color = "#60685C";
-        }
-      }
-      //if clicked is unchecked, re-enable buttons
-      if (!clicked.checked) {
-        if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
-          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
-          activitiesCheckboxes[index].removeAttribute("disabled");
-          activitiesCheckboxes[0].removeAttribute("disabled");
-          textColor.style.color = "#000";
-          clickedItems -= 1;
-        }
-        if (clickedDayAndTime === "Weekend") {
-          activitiesCheckboxes[0].removeAttribute("disabled");
-          $("fieldset.activities > label:nth-child(2)").css("color", "#000");
-          activitiesCheckboxes[index].removeAttribute("disabled");
-          textColor.style.color = "#000";
-        }
-      }
-      if (clickedItems >= 1) {
-        activitiesCheckboxes[0].setAttribute("disabled", true);
+  activitiesCheckboxes.map((element, i) => {
+    //get important data-types
+    const eventDayAndTime = activitiesCheckboxes[i].getAttribute(
+      "data-day-and-time"
+    );
+    const name = activitiesCheckboxes[i].getAttribute("name");
+    const textColor = activitiesTextContent[i];
+    if (clicked.checked) {
+      $activitiesLegendError.hide();
+      //check if same date and time and if clickedName is not equal to name
+      if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+        //disable matches
+        $(activitiesCheckboxes[i]).attr("disabled", "true");
         $("fieldset.activities > label:nth-child(2)").css("color", "#60685C");
-        console.log(clickedItems);
+        $(activitiesCheckboxes[0]).attr("disabled", "true");
+        $(textColor).css("color", "#60685C");
+        clickedItems += 1;
+      } else if (clickedDayAndTime === "Weekend") {
+        $(activitiesCheckboxes[i]).attr("disabled", "true");
+        $("fieldset.activities > label:nth-child(2)").css("color", "#000");
+        $(activitiesCheckboxes[0]).removeAttr("disabled");
+        $(textColor).css("color", "#60685C");
       }
-    });
+    } else {
+      //if clicked is unchecked, re-enable button
+      if (clickedDayAndTime === eventDayAndTime && clickedName !== name) {
+        $(activitiesCheckboxes[i]).removeAttr("disabled");
+        $("fieldset.activities > label:nth-child(2)").css("color", "#000");
+        $(activitiesCheckboxes[0]).removeAttr("disabled");
+        $("fieldset.activities > label:nth-child(2)").css("color", "#000");
+        $(textColor).css("color", "#000");
+        clickedItems -= 1;
+      } else if (clickedDayAndTime === "Weekend") {
+        $(activitiesCheckboxes[i]).removeAttr("disabled");
+        $(activitiesCheckboxes[0]).removeAttr("disabled");
+        $("fieldset.activities > label:nth-child(2)").css("color", "#000");
+        $(textColor).css("color", "#000");
+      }
+    }
+    if (clickedItems >= 1) {
+      $(activitiesCheckboxes[0]).attr("disabled", "true");
+      $("fieldset.activities > label:nth-child(2)").css("color", "#60685C");
+    }
   });
 });
 
@@ -304,27 +295,19 @@ $paymentSection.on("change", e => {
   zipCodeInput.style.border = "2px solid #5A0001";
   CVVInput.style.border = "2px solid #5A0001";
 
-  paymentOptions.map(element => {
-    //gives index position of all payment options in array
-    const index = paymentOptions.indexOf(element);
-    paymentArray.map(payments => {
+  paymentOptions.map(() => {
+    paymentArray.map((payments, i) => {
       //gives index position of all payment elements in array
-      const index2 = paymentArray.indexOf(payments);
+      paymentArray[i].hide();
+      $(paymentOptions[i]).removeAttr("selected");
       if (e.target.value === "credit card") {
         $(paymentOptions[1]).attr("selected", true);
-        $(paymentOptions[index]).removeAttr("selected");
         paymentArray[0].show();
-        //hides the rest
-        paymentArray[index2].hide();
       } else if (e.target.value === "paypal") {
         $(paymentOptions[2]).attr("selected", true);
-        $(paymentOptions[index]).removeAttr("selected");
         paymentArray[1].show();
-        paymentArray[index2].hide();
       } else {
-        $(paymentOptions[index]).removeAttr("selected");
         $(paymentOptions[3]).attr("selected", true);
-        paymentArray[index2].hide();
         paymentArray[2].show();
       }
     });
@@ -417,31 +400,25 @@ isValidCC = () => {
   const tooShort = /^\d{1,12}$/gi.test(text);
   const tooLong = /^\d{17,}$/gi.test(text);
   const notNumbers = /^[\D\w]+/gi.test(text);
+  $CCLabelTooShortError.hide();
+  $CCLabelTooLongError.hide();
+  $notNumbersError.hide();
+  $CCLabelZeroError.hide();
+
   if (correct) {
-    $CCLabelTooShortError.hide();
-    $CCLabelTooLongError.hide();
-    $notNumbersError.hide();
     CCInput.style.border = "2px solid #5A0001";
     return true;
   } else if (tooShort) {
     CCInput.style.border = " 2px solid #F00";
     $CCLabelTooShortError.show();
-    $CCLabelZeroError.hide();
     return false;
   } else if (tooLong) {
     CCInput.style.border = " 2px solid #F00";
     $CCLabelTooLongError.show();
-    $CCLabelTooShortError.hide();
     return false;
   } else if (notNumbers) {
-    $CCLabelTooShortError.hide();
-    $CCLabelTooLongError.hide();
     $notNumbersError.show();
-    $CCLabelZeroError.hide();
   } else {
-    $CCLabelTooShortError.hide();
-    $CCLabelTooLongError.hide();
-    $notNumbersError.hide();
     $CCLabelZeroError.show();
     CCInput.style.border = "2px solid #F00";
   }

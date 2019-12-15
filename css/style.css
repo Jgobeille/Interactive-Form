@@ -134,8 +134,8 @@ option {
   font-family: "roboto", sans-serif;
 }
 
-header>span:nth-child(1) {
-  padding-top: .5em;
+header > span:nth-child(1) {
+  padding-top: 0.5em;
 }
 
 /* ================================= 
@@ -194,8 +194,9 @@ header>span:nth-child(1) {
   margin-bottom: 2em;
 }
 
-
-
+.bottom {
+  margin-top: 2em;
+}
 
 .horn-left {
   float: left;
@@ -205,7 +206,7 @@ header>span:nth-child(1) {
 }
 
 .text-center {
-  padding-top: .7em;
+  padding-top: 0.7em;
   float: left;
   width: 80%;
   text-align: center;
@@ -260,7 +261,7 @@ header>span:nth-child(1) {
     float: left;
   }
 
-  .col+.col {
+  .col + .col {
     margin-left: 2.5%;
   }
 
@@ -274,5 +275,15 @@ header>span:nth-child(1) {
 
   label {
     clear: both;
+  }
+}
+
+@media (max-width: 550px) {
+  .horn-left,
+  .horn-right {
+    display: none;
+  }
+  .text-center {
+    width: 100%;
   }
 }
