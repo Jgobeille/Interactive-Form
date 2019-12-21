@@ -123,7 +123,7 @@ $otherTitle.hide();
 //Loop over the title options and add a click listener
 $jobTitleOptions.on("change", function() {
   //Answer to find how to select option found here: https://stackoverflow.com/questions/11179406/jquery-get-value-of-select-onchange
-  this.value === "other" ? $otherTitle.show() : $otherTitle.hide();
+  this.value === "other" ? $otherTitle.fadeIn() : $otherTitle.hide();
 });
 
 //*============================================================================================
@@ -464,6 +464,7 @@ $("form").on("submit", e => {
     isValidUsername();
     isValidEmail();
     isActivitiesChecked();
+    return false;
   }
   //if checks if credit card is the selected option, then runs the rest of the payment validations
   if (isPropSelected) {
